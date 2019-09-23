@@ -11,7 +11,7 @@ import UIKit
 typealias TimerTimeString = (min: String, sec: String, ms: String)
 typealias TimerTimeInt = (min: Int, sec: Int, ms: Int)
 
-protocol TimeChangeDelegate {
+protocol TimeChangeDelegate: class {
     func updateTime(_ time: TimerTimeString)
 }
 
@@ -27,7 +27,7 @@ protocol TimerCellViewModel: class {
 }
 
 class DefaultTimerCellViewModel: TimerCellViewModel {
-    var delegate: TimeChangeDelegate? {
+    weak var delegate: TimeChangeDelegate? {
         didSet {
             delegate?.updateTime(getTimerTime(currentTime))
         }
@@ -41,7 +41,6 @@ class DefaultTimerCellViewModel: TimerCellViewModel {
     
     private var timer: Timer?
     private var _currentTime: TimerTimeInt
-    private let _initialTime: TimerTimeInt
     private var _bgColor: UIColor
     
     deinit {
@@ -51,7 +50,6 @@ class DefaultTimerCellViewModel: TimerCellViewModel {
     init(time: TimerTimeInt = (0, 0, 0),
          color: UIColor = UIColor.random) {
         _currentTime = time
-        _initialTime = time
         _bgColor = color
     }
     
@@ -65,7 +63,7 @@ class DefaultTimerCellViewModel: TimerCellViewModel {
     
     func resetToInitialState() {
         stopTimer()
-        _currentTime = _initialTime
+        _currentTime = (0, 0, 0)
     }
     
     private func startTimer() {

@@ -11,8 +11,8 @@ import UIKit
 class BenchmarkViewController: UIViewController {
     
     enum CollectionLayout: CaseIterable {
-        case grid
         case table
+        case grid
         case stag
     }
     
@@ -28,8 +28,8 @@ class BenchmarkViewController: UIViewController {
     }
     private var layouts: [CollectionLayout: UICollectionViewLayout] =
         [
-            .grid: GridLayout(numberOfColumns: 2),
             .table: GridLayout(numberOfColumns: 1),
+            .grid: GridLayout(numberOfColumns: 2),
             .stag: StagLayout(
                 widthHeightRatios: [(1.0, 1.0), (0.5, 0.5), (0.5, 1.5), (0.5, 1.0)],
                 itemSpacing: 4
@@ -54,13 +54,25 @@ class BenchmarkViewController: UIViewController {
     
     @IBAction func editAction(_ sender: Any) {
         self.showAlert("", message: "", style: .actionSheet, actions: [
-            ("Remove all timers", .default, {[unowned self] in self.removeAllElements()}),
-            ("Next layout", .default, {[unowned self] in self.nextLayout()})
+            (
+                "Remove all timers",
+                .default,
+                { [unowned self] in
+                    self.removeAllElements()
+                }
+            ),
+            (
+                "Next layout",
+                .default,
+                { [unowned self] in
+                    self.nextLayout()
+                }
+            )
         ])
     }
     
     @IBAction func addNewTimer(_ sender: Any) {
-        _ = dataProvider.createNewTimer()
+        dataProvider.createNewTimer()
         benchmarkCollectionView.insertItems(at: [IndexPath(row: dataProvider.getTimers().count - 1, section: 0)])
     }
     

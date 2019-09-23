@@ -10,7 +10,7 @@ import UIKit
 
 protocol BenchmarkDataProvider {
     func getTimers() -> [TimerCellViewModel]
-    func createNewTimer() -> TimerCellViewModel
+    @discardableResult func createNewTimer() -> TimerCellViewModel
     func getTimer(ind: Int) -> TimerCellViewModel?
     func resetToInitialState()
     func removeAll()
@@ -19,12 +19,12 @@ protocol BenchmarkDataProvider {
 
 class DefaultBenchmarkDataProvider: BenchmarkDataProvider {
     private var data: [TimerCellViewModel] = []
-    
+        
     func getTimers() -> [TimerCellViewModel] {
         return data
     }
     
-    func createNewTimer() -> TimerCellViewModel {
+    @discardableResult func createNewTimer() -> TimerCellViewModel {
         let newTimerModel = DefaultTimerCellViewModel()
         data.append(newTimerModel)
         return newTimerModel
@@ -38,15 +38,15 @@ class DefaultBenchmarkDataProvider: BenchmarkDataProvider {
     }
     
     func resetToInitialState() {
-        data.forEach({ viewModel in
+        data.forEach { viewModel in
             viewModel.resetToInitialState()
-        })
+        }
     }
     
     func removeAll() {
-        data.forEach({ viewModel in
+        data.forEach { viewModel in
             viewModel.stopTimer()
-        })
+        }
         data.removeAll()
     }
     
